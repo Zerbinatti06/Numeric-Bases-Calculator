@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <title>Machine</title>
+</head> 
+<body class="p-0 m-0">
+    <div class="w-screen h-screen bg-gray-200 flex justify-center items-center">
+        <div class="size-fit bg-gray-900 rounded-sm p-5 flex-col flex gap-5 scale-300">
+            <div class="flex items-center justify-center">
+                <h1 class="font-bold font-mono text-white">ZERBI'S MACHINE</h1>
+            </div>
+            <div class="flex items-center justify-center gap-5">
+                <input type="text" id="InBin" class="bg-green-200 size-auto rounded-xl px-2 hover:scale-105" placeholder="Binário" oninput="binary()">
+                <button class="bg-orange-500 w-6 h-6 rounded-sm hover:scale-105" onclick="copy(InBin.value)">
+                    <img src="pranchetas.png" class="scale-70">
+                </button>
+            </div>
+            <div class="flex items-center justify-center gap-5">
+                <input type="text" id="InDec" class="bg-green-200 size-auto rounded-xl px-2 hover:scale-105" placeholder="Decimal" oninput="decimal()">
+                <button class="bg-orange-500 w-6 h-6 rounded-sm hover:scale-105" onclick="copy(InBin.value)">
+                    <img src="pranchetas.png" class="scale-70">
+                </button>
+            </div>
+            <div class="flex items-center justify-center gap-5">
+                <input type="text" id="InHex" class="bg-green-200 size-auto rounded-xl px-2 hover:scale-105" placeholder="Hexadecimal" oninput="hexadecimal()">
+                <button class="bg-orange-500 w-6 h-6 rounded-sm hover:scale-105" onclick="copy(InBin.value)">
+                    <img src="pranchetas.png" class="scale-70">
+                </button>
+            </div>
+            <div class="flex items-center justify-center gap-5">
+                <input type="text" id="InOct" class="bg-green-200 size-auto rounded-xl px-2 hover:scale-105 focus:outline-hidden" placeholder="Octal" oninput="octal()">
+                <button class="bg-orange-500 w-6 h-6 rounded-sm hover:scale-105" onclick="copy(InBin.value)">
+                    <img src="pranchetas.png" class="scale-70">
+                </button>
+            </div>            
+        </div>
+    </div>
+</body>
+</html> 
+<script>
+
+    function binary(){ 
+        let bin = InBin.value;
+        let re = new RegExp("[0-1]+");
+
+        let binary = bin.replace(/[^0-1]/, "");
+        InBin.value = binary;
+
+        if(re.test(binary)){
+            InDec.value = parseInt(binary, 2).toString(10);
+            InHex.value = parseInt(binary, 2).toString(16).toUpperCase();
+            InOct.value = parseInt(binary, 2).toString(8);
+        }
+
+        if(InBin.value == ""){
+            InDec.value = "";
+            InHex.value = "";
+            InOct.value = "";
+        }
+
+    }
+
+    function decimal(){
+        let dec = InDec.value;
+        let re = new RegExp("[0-9]+");
+
+        let decimal = dec.replace(/[^0-9]/, "");
+        InDec.value = decimal;
+
+        if(re.test(decimal)){
+            InBin.value = Number(decimal).toString(2);
+            InHex.value = Number(decimal).toString(16).toUpperCase();
+            InOct.value = Number(decimal).toString(8);
+        }
+
+        if(InDec.value == ""){
+            InBin.value = "";
+            InHex.value = "";
+            InOct.value = "";
+        }
+
+    }
+
+    function hexadecimal(){
+        let hex = InHex.value;
+        let re = new RegExp("[0-9a-f]", "i");
+
+        let hexadecimal = hex.replace(/[^0-9a-f]/gi, "");
+        InHex.value = hexadecimal.toUpperCase();
+        console.log(hexadecimal);
+
+        if(re.test(hexadecimal)){
+            InBin.value = parseInt(hexadecimal, 16).toString(2);
+            InDec.value = parseInt(hexadecimal, 16).toString(10);
+            InOct.value = parseInt(hexadecimal, 16).toString(8);
+        }
+
+        if(InHex.value == ""){
+            InBin.value = "";
+            InDec.value = "";
+            InOct.value = "";
+        }
+    }
+
+    function octal(){
+        let oct = InOct.value;
+        let re = new RegExp("[0-7]", "g");
+
+        let octal = oct.replace(/[^0-7]/g, "");
+        InOct.value = octal;
+
+        if(re.test(octal)){
+            InBin.value = parseInt(octal, 8).toString(2);
+            InDec.value = parseInt(octal, 8).toString(10);
+            InHex.value = parseInt(octal, 8).toString(16).toUpperCase();
+        }
+
+        if(InOct.value == ""){
+            InBin.value = "";
+            InDec.value = "";
+            InHex.value = "";
+        }
+    }
+
+    async function copy(text) {
+        try {
+            await navigator.clipboard.writeText(text);
+            console.log('Texto copiado com sucesso!');
+        } catch (err) {
+            console.error('Erro ao copiar: ', err);
+        }
+
+
+    }
+
+</script>
